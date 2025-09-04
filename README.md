@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Realtime Chat App
 
-## Getting Started
+Aplikasi chat realtime sederhana yang dibangun menggunakan Next.js 15, Socket.IO, Redis, Prisma, dan MySQL.
 
-First, run the development server:
+## Fitur
 
+- ✅ Realtime messaging dengan Socket.IO
+- ✅ Persistensi data dengan MySQL via Prisma
+- ✅ Caching dengan Redis
+- ✅ Multiple chat rooms
+- ✅ Typing indicators
+- ✅ User authentication sederhana
+- ✅ Responsive design dengan Tailwind CSS
+
+## Tech Stack
+
+- **Frontend:** Next.js 15, React, TypeScript, Tailwind CSS
+- **Backend:** Next.js API Routes, Socket.IO
+- **Database:** MySQL dengan Prisma ORM
+- **Cache:** Redis
+- **Realtime:** Socket.IO
+
+## Prerequisites
+
+Pastikan Anda sudah menginstall:
+- Node.js (v18 atau lebih baru)
+- MySQL
+- Redis
+- npm atau yarn
+
+## Installation
+
+1. Clone repository ini
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Setup environment variables:
+   Ubah file `.env` sesuai dengan konfigurasi database dan Redis Anda:
+   ```env
+   DATABASE_URL="mysql://username:password@localhost:3306/database_name"
+   REDIS_URL="redis://localhost:6379"
+   NEXTAUTH_SECRET="your-secret-key-here"
+   NEXTAUTH_URL="http://localhost:3000"
+   ```
+
+4. Setup database:
+   ```bash
+   # Buat database MySQL terlebih dahulu
+   mysql -u root -p -e "CREATE DATABASE realtimeapp;"
+   
+   # Jalankan migrasi Prisma
+   npx prisma migrate dev --name init
+   ```
+
+5. Generate Prisma client:
+   ```bash
+   npx prisma generate
+   ```
+
+## Running the Application
+
+1. Pastikan MySQL dan Redis sudah berjalan
+2. Jalankan development server:
+   ```bash
+   npm run dev
+   ```
+3. Buka [http://localhost:3000](http://localhost:3000) di browser
+
+## Database Schema
+
+Aplikasi ini menggunakan 4 model utama:
+
+- **User**: Menyimpan informasi pengguna
+- **Room**: Menyimpan informasi chat room
+- **Message**: Menyimpan pesan chat
+- **RoomMember**: Menyimpan relasi antara user dan room
+
+## API Endpoints
+
+- `GET /api/rooms` - Mendapatkan daftar room
+- `POST /api/rooms` - Membuat room baru
+- `GET /api/rooms/[roomId]` - Mendapatkan pesan dalam room
+- `POST /api/rooms/[roomId]` - Join room
+- `GET /api/users` - Mendapatkan daftar user
+- `POST /api/users` - Membuat user baru
+
+## Socket.IO Events
+
+### Client to Server:
+- `join-room` - Join chat room
+- `send-message` - Kirim pesan
+- `typing` - Indikator sedang mengetik
+
+### Server to Client:
+- `new-message` - Pesan baru diterima
+- `user-joined` - User join room
+- `user-left` - User keluar room
+- `user-typing` - User sedang mengetik
+
+## Development
+
+Untuk development, Anda bisa menggunakan Prisma Studio untuk melihat data:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx prisma studio
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Production
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Untuk deployment production:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Build aplikasi:
+   ```bash
+   npm run build
+   ```
 
-## Learn More
+2. Start production server:
+   ```bash
+   npm start
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+## Troubleshooting
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Database connection error**: Pastikan MySQL berjalan dan URL database benar
+2. **Redis connection error**: Pastikan Redis berjalan di port 6379
+3. **Socket.IO tidak terhubung**: Periksa apakah server Socket.IO sudah diinisialisasi dengan benar
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License
